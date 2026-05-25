@@ -1,6 +1,12 @@
 /* global dscc */
 'use strict';
 
+// TEMP DEBUG — confirm JS is executing at all
+document.documentElement.style.background = '#fff';
+document.body.style.cssText = 'background:#ff0;color:#000;padding:20px;font-family:monospace;font-size:13px;';
+document.body.innerHTML = '<b>JS loaded OK — waiting for drawViz...</b>';
+
+
 // ── Constants ─────────────────────────────────────────────────────────────
 var MONTH_W   = 48;   // px per month (default)
 var ROW_H     = 32;
@@ -269,6 +275,21 @@ function drawViz(data) {
 
   // Process rows — each row = one booking (email + date dimensions)
   var rows = data.tables.DEFAULT;
+
+  // DEBUG — show first row raw values so we can check data format
+  if (rows && rows.length > 0) {
+    var r0 = rows[0];
+    document.body.innerHTML = '<div style="padding:16px;font-family:monospace;font-size:11px;background:#fff;color:#000">'
+      + '<b>DEBUG — row count: ' + rows.length + '</b><br><br>'
+      + 'emailDim[0]: ' + JSON.stringify((r0.emailDim || [])[0]) + '<br>'
+      + 'dateDim[0]:  ' + JSON.stringify((r0.dateDim  || [])[0]) + '<br>'
+      + 'nameDim[0]:  ' + JSON.stringify((r0.nameDim  || [])[0]) + '<br>'
+      + 'statusDim[0]:' + JSON.stringify((r0.statusDim|| [])[0]) + '<br><br>'
+      + '<i>Remove debug block from index.js once format confirmed</i>'
+      + '</div>';
+    return;
+  }
+
   var clientMap = {};
 
   rows.forEach(function (row) {
