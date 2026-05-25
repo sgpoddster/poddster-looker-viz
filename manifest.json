@@ -1,0 +1,71 @@
+{
+  "name": "Client Retention Timeline",
+  "organization": "Poddster",
+  "description": "Gantt-style timeline showing booking history per client email - first booking, last booking, and a dot for every individual session.",
+  "logoUrl": "https://sgpoddster.github.io/poddster-looker-viz/logo.png",
+  "devMode": true,
+  "components": [{
+    "id": "clientRetentionTimeline",
+    "name": "Client Retention Timeline",
+    "description": "One row per client, dots for every booking, bar showing full span.",
+    "iconUrl": "https://sgpoddster.github.io/poddster-looker-viz/icon.png",
+    "resource": {
+      "js":  "https://sgpoddster.github.io/poddster-looker-viz/index.js",
+      "css": "https://sgpoddster.github.io/poddster-looker-viz/index.css"
+    },
+    "data": [{
+      "id": "concepts",
+      "label": "Data",
+      "elements": [
+        {
+          "id": "emailDim",
+          "label": "Email / Client identifier",
+          "type": "DIMENSION",
+          "options": { "min": 1, "max": 1 }
+        },
+        {
+          "id": "dateDim",
+          "label": "Booking Date",
+          "type": "DIMENSION",
+          "options": { "min": 1, "max": 1 }
+        },
+        {
+          "id": "nameDim",
+          "label": "Customer Name (optional)",
+          "type": "DIMENSION",
+          "options": { "min": 0, "max": 1 }
+        },
+        {
+          "id": "statusDim",
+          "label": "Status (optional - Active / Cancelled)",
+          "type": "DIMENSION",
+          "options": { "min": 0, "max": 1 }
+        }
+      ]
+    }],
+    "style": [{
+      "id": "colours",
+      "label": "Colours",
+      "elements": [
+        {
+          "id": "activeColor",
+          "label": "Active booking dot",
+          "type": "FILL_COLOR",
+          "defaultValue": { "color": "#1a73e8" }
+        },
+        {
+          "id": "cancelColor",
+          "label": "Cancelled booking dot",
+          "type": "FILL_COLOR",
+          "defaultValue": { "color": "#ea4335" }
+        },
+        {
+          "id": "barColor",
+          "label": "Span bar colour",
+          "type": "FILL_COLOR",
+          "defaultValue": { "color": "#93bbf5" }
+        }
+      ]
+    }]
+  }]
+}
