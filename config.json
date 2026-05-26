@@ -1,0 +1,68 @@
+{
+  "data": [{
+    "id": "concepts",
+    "label": "Data",
+    "elements": [
+      {
+        "id": "orderIdDim",
+        "label": "Order ID (prevents same-day deduplication)",
+        "type": "DIMENSION",
+        "options": { "min": 0, "max": 1 }
+      },
+      {
+        "id": "emailDim",
+        "label": "Email / Client identifier",
+        "type": "DIMENSION",
+        "options": { "min": 1, "max": 1 }
+      },
+      {
+        "id": "dateDim",
+        "label": "Booking Date",
+        "type": "DIMENSION",
+        "options": { "min": 1, "max": 1 }
+      },
+      {
+        "id": "nameDim",
+        "label": "Customer Name (optional)",
+        "type": "DIMENSION",
+        "options": { "min": 0, "max": 1 }
+      },
+      {
+        "id": "statusDim",
+        "label": "Status (optional - Active / Cancelled)",
+        "type": "DIMENSION",
+        "options": { "min": 0, "max": 1 }
+      },
+      {
+        "id": "maxResults",
+        "label": "Max rows (increase if data is cut off)",
+        "type": "MAX_RESULTS",
+        "options": { "max": 50000 }
+      }
+    ]
+  }],
+  "style": [{
+    "id": "colours",
+    "label": "Colours",
+    "elements": [
+      {
+        "id": "activeColor",
+        "label": "Active booking dot",
+        "type": "FONT_COLOR",
+        "defaultValue": "#8ab4f8"
+      },
+      {
+        "id": "cancelColor",
+        "label": "Cancelled booking dot",
+        "type": "FONT_COLOR",
+        "defaultValue": "#f28b82"
+      },
+      {
+        "id": "barColor",
+        "label": "Span bar colour",
+        "type": "FONT_COLOR",
+        "defaultValue": "#3d6eb4"
+      }
+    ]
+  }]
+}

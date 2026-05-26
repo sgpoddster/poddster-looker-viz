@@ -1,15 +1,35 @@
+!function(e,R){"object"==typeof exports&&"object"==typeof module?module.exports=R():"function"==typeof define&&define.amd?define("dscc",[],R):"object"==typeof exports?exports.dscc=R():e.dscc=R()}(window,function(){return C={},n.m=t={"./src/index.ts":
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+/*! no static exports found */function(e,N,R){"use strict";var i=this&&this.__assign||function(){return(i=Object.assign||function(e){for(var R,t=1,C=arguments.length;t<C;t++)for(var n in R=arguments[t])Object.prototype.hasOwnProperty.call(R,n)&&(e[n]=R[n]);return e}).apply(this,arguments)};Object.defineProperty(N,"__esModule",{value:!0});
+/*!
+  @license
+  Copyright 2019 Google LLC
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+*/
+var a=R(/*! ./types */"./src/types.ts");!function(e){for(var R in e)N.hasOwnProperty(R)||(N[R]=e[R])}(R(/*! ./types */"./src/types.ts")),N.getWidth=function(){return document.body.clientWidth},N.getHeight=function(){return document.documentElement.clientHeight},N.getComponentId=function(){var e=new URLSearchParams(window.location.search);if(null!==e.get("dscId"))return e.get("dscId");throw new Error("dscId must be in the query parameters. This is a bug in ds-component, please file a bug: https://github.com/googledatastudio/ds-component/issues/new")};function E(e){return e.type===a.ConfigDataElementType.DIMENSION||e.type===a.ConfigDataElementType.METRIC}function r(e){return e===a.ConfigDataElementType.DIMENSION?-1:1}function _(e){var R=[];e.config.data.forEach(function(e){e.elements.filter(E).forEach(function(e){R.push(e)})});var t,C=(t=function(e,R){return r(e.type)-r(R.type)},R.map(function(e,R){return{item:e,index:R}}).sort(function(e,R){return t(e.item,R.item)||e.index-R.index}).map(function(e){return e.item})),n=[];return C.forEach(function(e){e.value.forEach(function(){return n.push(e.id)})}),n}function o(R){return function(e){var t,C,n={};return C=R,((t=e).length<C.length?t.map(function(e,R){return[e,C[R]]}):C.map(function(e,R){return[t[R],e]})).forEach(function(e){var R=e[0],t=e[1];void 0===n[t]&&(n[t]=[]),n[t].push(R)},{}),n}}N.fieldsByConfigId=function(e){var R=e.fields.reduce(function(e,R){return e[R.id]=R,e},{}),t={};return e.config.data.forEach(function(e){e.elements.filter(E).forEach(function(e){t[e.id]=e.value.map(function(e){return R[e]})})}),t};function U(e){var R={};return(e.config.style||[]).forEach(function(e){e.elements.forEach(function(e){if(void 0!==R[e.id])throw new Error("styleIds must be unique. Your styleId: '"+e.id+"' is used more than once.");R[e.id]={value:e.value,defaultValue:e.defaultValue}})},{}),R}function Y(e){return e.config.themeStyle}function n(e){switch(e){case a.DSInteractionType.FILTER:return a.InteractionType.FILTER}}function s(e){var R=e.config.interactions;return void 0===R?{}:R.reduce(function(e,R){var t=R.supportedActions.map(n),C={type:n(R.value.type),data:R.value.data};return e[R.id]={value:C,supportedActions:t},e},{})}function u(e){return(e.dataResponse.dateRanges||[]).reduce(function(e,R){return e[R.id]={start:R.start,end:R.end},e},{})}function T(e){var R=e.dataResponse.colorMap||{};return i({},R)}N.tableTransform=function(e){return{tables:(R=e,C=N.fieldsByConfigId(R),n=_(R),E={},r=n.map(function(e){void 0===E[e]?E[e]=0:E[e]++;var R=E[e],t=C[e][R];return i(i({},t),{configId:e})}),(t={})[a.TableType.DEFAULT]={headers:[],rows:[]},o=t,R.dataResponse.tables.forEach(function(e){o[e.id]={headers:r,rows:e.rows}}),o),dateRanges:u(e),fields:N.fieldsByConfigId(e),style:U(e),theme:Y(e),interactions:s(e),colorMap:T(e)};var R,t,C,n,E,r,o},N.objectTransform=function(e){return{tables:(C=_(R=e),(t={})[a.TableType.DEFAULT]=[],n=t,R.dataResponse.tables.forEach(function(e){var R=e.rows.map(o(C));e.id===a.TableType.DEFAULT?n[e.id]=R:(void 0===n[e.id]&&(n[e.id]=[]),n[e.id]=n[e.id].concat(R))}),n),dateRanges:u(e),fields:N.fieldsByConfigId(e),style:U(e),theme:Y(e),interactions:s(e),colorMap:T(e)};var R,t,C,n};function c(e){var R,t=!1;return e===N.tableTransform||e===N.objectTransform?t=!0:(R=!1,"identity"===e("identity")&&(R=!0,console.warn("This is an unsupported data format. Please use one of the supported transforms:\n       dscc.objectFormat or dscc.tableFormat.")),R&&(t=!0)),t}N.subscribeToData=function(R,t){if(c(t.transform)){var e=function(e){e.data.type===a.MessageType.RENDER?R(t.transform(e.data)):console.error("MessageType: "+e.data.type+" is not supported by this version of the library.")};window.addEventListener("message",e);var C={componentId:N.getComponentId(),type:a.ToDSMessageType.VIZ_READY};return window.parent.postMessage(C,"*"),function(){return window.removeEventListener("message",e)}}throw new Error("Only the built in transform functions are supported.")},N.sendInteraction=function(e,R,t){var C=N.getComponentId(),n={type:a.ToDSMessageType.INTERACTION,id:e,data:t,componentId:C};window.parent.postMessage(n,"*")},N.clearInteraction=function(e,R){N.sendInteraction(e,R,void 0)}},"./src/types.ts":
+/*!**********************!*\
+  !*** ./src/types.ts ***!
+  \**********************/
+/*! no static exports found */function(e,R,t){"use strict";var C,n,E,r,o,N,i;Object.defineProperty(R,"__esModule",{value:!0}),(C=R.ConceptType||(R.ConceptType={})).METRIC="METRIC",C.DIMENSION="DIMENSION",(R.MessageType||(R.MessageType={})).RENDER="RENDER",(n=R.FieldType||(R.FieldType={})).YEAR="YEAR",n.YEAR_QUARTER="YEAR_QUARTER",n.YEAR_MONTH="YEAR_MONTH",n.YEAR_WEEK="YEAR_WEEK",n.YEAR_MONTH_DAY="YEAR_MONTH_DAY",n.YEAR_MONTH_DAY_HOUR="YEAR_MONTH_DAY_HOUR",n.QUARTER="QUARTER",n.MONTH="MONTH",n.WEEK="WEEK",n.MONTH_DAY="MONTH_DAY",n.DAY_OF_WEEK="DAY_OF_WEEK",n.DAY="DAY",n.HOUR="HOUR",n.MINUTE="MINUTE",n.DURATION="DURATION",n.COUNTRY="COUNTRY",n.COUNTRY_CODE="COUNTRY_CODE",n.CONTINENT="CONTINENT",n.CONTINENT_CODE="CONTINENT_CODE",n.SUB_CONTINENT="SUB_CONTINENT",n.SUB_CONTINENT_CODE="SUB_CONTINENT_CODE",n.REGION="REGION",n.REGION_CODE="REGION_CODE",n.CITY="CITY",n.CITY_CODE="CITY_CODE",n.METRO_CODE="METRO_CODE",n.LATITUDE_LONGITUDE="LATITUDE_LONGITUDE",n.NUMBER="NUMBER",n.PERCENT="PERCENT",n.TEXT="TEXT",n.BOOLEAN="BOOLEAN",n.URL="URL",n.IMAGE="IMAGE",n.CURRENCY_AED="CURRENCY_AED",n.CURRENCY_ALL="CURRENCY_ALL",n.CURRENCY_ARS="CURRENCY_ARS",n.CURRENCY_AUD="CURRENCY_AUD",n.CURRENCY_BDT="CURRENCY_BDT",n.CURRENCY_BGN="CURRENCY_BGN",n.CURRENCY_BOB="CURRENCY_BOB",n.CURRENCY_BRL="CURRENCY_BRL",n.CURRENCY_CAD="CURRENCY_CAD",n.CURRENCY_CDF="CURRENCY_CDF",n.CURRENCY_CHF="CURRENCY_CHF",n.CURRENCY_CLP="CURRENCY_CLP",n.CURRENCY_CNY="CURRENCY_CNY",n.CURRENCY_COP="CURRENCY_COP",n.CURRENCY_CRC="CURRENCY_CRC",n.CURRENCY_CZK="CURRENCY_CZK",n.CURRENCY_DKK="CURRENCY_DKK",n.CURRENCY_DOP="CURRENCY_DOP",n.CURRENCY_EGP="CURRENCY_EGP",n.CURRENCY_ETB="CURRENCY_ETB",n.CURRENCY_EUR="CURRENCY_EUR",n.CURRENCY_GBP="CURRENCY_GBP",n.CURRENCY_HKD="CURRENCY_HKD",n.CURRENCY_HRK="CURRENCY_HRK",n.CURRENCY_HUF="CURRENCY_HUF",n.CURRENCY_IDR="CURRENCY_IDR",n.CURRENCY_ILS="CURRENCY_ILS",n.CURRENCY_INR="CURRENCY_INR",n.CURRENCY_IRR="CURRENCY_IRR",n.CURRENCY_ISK="CURRENCY_ISK",n.CURRENCY_JMD="CURRENCY_JMD",n.CURRENCY_JPY="CURRENCY_JPY",n.CURRENCY_KRW="CURRENCY_KRW",n.CURRENCY_LKR="CURRENCY_LKR",n.CURRENCY_LTL="CURRENCY_LTL",n.CURRENCY_MNT="CURRENCY_MNT",n.CURRENCY_MVR="CURRENCY_MVR",n.CURRENCY_MXN="CURRENCY_MXN",n.CURRENCY_MYR="CURRENCY_MYR",n.CURRENCY_NOK="CURRENCY_NOK",n.CURRENCY_NZD="CURRENCY_NZD",n.CURRENCY_PAB="CURRENCY_PAB",n.CURRENCY_PEN="CURRENCY_PEN",n.CURRENCY_PHP="CURRENCY_PHP",n.CURRENCY_PKR="CURRENCY_PKR",n.CURRENCY_PLN="CURRENCY_PLN",n.CURRENCY_RON="CURRENCY_RON",n.CURRENCY_RSD="CURRENCY_RSD",n.CURRENCY_RUB="CURRENCY_RUB",n.CURRENCY_SAR="CURRENCY_SAR",n.CURRENCY_SEK="CURRENCY_SEK",n.CURRENCY_SGD="CURRENCY_SGD",n.CURRENCY_THB="CURRENCY_THB",n.CURRENCY_TRY="CURRENCY_TRY",n.CURRENCY_TWD="CURRENCY_TWD",n.CURRENCY_TZS="CURRENCY_TZS",n.CURRENCY_UAH="CURRENCY_UAH",n.CURRENCY_USD="CURRENCY_USD",n.CURRENCY_UYU="CURRENCY_UYU",n.CURRENCY_VEF="CURRENCY_VEF",n.CURRENCY_VND="CURRENCY_VND",n.CURRENCY_YER="CURRENCY_YER",n.CURRENCY_ZAR="CURRENCY_ZAR",(E=R.TableType||(R.TableType={})).DEFAULT="DEFAULT",E.COMPARISON="COMPARISON",E.SUMMARY="SUMMARY",(r=R.DateRangeType||(R.DateRangeType={})).DEFAULT="DEFAULT",r.COMPARISON="COMPARISON",(o=R.ConfigDataElementType||(R.ConfigDataElementType={})).METRIC="METRIC",o.DIMENSION="DIMENSION",o.MAX_RESULTS="MAX_RESULTS",(N=R.ConfigStyleElementType||(R.ConfigStyleElementType={})).TEXTINPUT="TEXTINPUT",N.SELECT_SINGLE="SELECT_SINGLE",N.CHECKBOX="CHECKBOX",N.FONT_COLOR="FONT_COLOR",N.FONT_SIZE="FONT_SIZE",N.FONT_FAMILY="FONT_FAMILY",N.FILL_COLOR="FILL_COLOR",N.BORDER_COLOR="BORDER_COLOR",N.AXIS_COLOR="AXIS_COLOR",N.GRID_COLOR="GRID_COLOR",N.OPACITY="OPACITY",N.LINE_WEIGHT="LINE_WEIGHT",N.LINE_STYLE="LINE_STYLE",N.BORDER_RADIUS="BORDER_RADIUS",N.INTERVAL="INTERVAL",N.SELECT_RADIO="SELECT_RADIO",(R.DSInteractionType||(R.DSInteractionType={})).FILTER="FILTER",(i=R.ToDSMessageType||(R.ToDSMessageType={})).VIZ_READY="vizReady",i.INTERACTION="vizAction",(R.InteractionType||(R.InteractionType={})).FILTER="FILTER"}},n.c=C,n.d=function(e,R,t){n.o(e,R)||Object.defineProperty(e,R,{enumerable:!0,get:t})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(R,e){if(1&e&&(R=n(R)),8&e)return R;if(4&e&&"object"==typeof R&&R&&R.__esModule)return R;var t=Object.create(null);if(n.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:R}),2&e&&"string"!=typeof R)for(var C in R)n.d(t,C,function(e){return R[e]}.bind(null,C));return t},n.n=function(e){var R=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(R,"a",R),R},n.o=function(e,R){return Object.prototype.hasOwnProperty.call(e,R)},n.p="",n(n.s="./src/index.ts");function n(e){if(C[e])return C[e].exports;var R=C[e]={i:e,l:!1,exports:{}};return t[e].call(R.exports,R,R.exports,n),R.l=!0,R.exports}var t,C});
 /* global dscc */
 'use strict';
 
-// TEMP DEBUG — confirm JS is executing at all
-document.documentElement.style.background = '#fff';
-document.body.style.cssText = 'background:#ff0;color:#000;padding:20px;font-family:monospace;font-size:13px;';
-document.body.innerHTML = '<b>JS loaded OK — waiting for drawViz...</b>';
-
-
 // ── Constants ─────────────────────────────────────────────────────────────
 var MONTH_W   = 48;   // px per month (default)
-var ROW_H     = 32;
+var ROW_H     = 34;
 var MONTHS    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 // ── State ─────────────────────────────────────────────────────────────────
@@ -20,12 +40,33 @@ var nMonths     = 0;
 var sMon        = null;
 var totalW      = 0;
 var todayX      = 0;
-var activeColor = '#1a73e8';
-var cancelColor = '#ea4335';
-var barColor    = '#93bbf5';
+var activeColor = '#8ab4f8';
+var cancelColor = '#f28b82';
+var barColor    = '#3d6eb4';
 
 // ── Build DOM skeleton (once) ──────────────────────────────────────────────
 document.body.innerHTML = [
+  '<div id="stats-bar">',
+    '<div class="stat-card">',
+      '<div class="stat-title">Active clients (30d)</div>',
+      '<div class="stat-val" id="sv-active">—</div>',
+      '<div class="stat-chg" id="sc-active"></div>',
+    '</div>',
+    '<div class="stat-card">',
+      '<div class="stat-title">Bookings (30d)</div>',
+      '<div class="stat-val" id="sv-book30">—</div>',
+      '<div class="stat-chg" id="sc-book30"></div>',
+    '</div>',
+    '<div class="stat-card">',
+      '<div class="stat-title">New clients (30d)</div>',
+      '<div class="stat-val" id="sv-new">—</div>',
+      '<div class="stat-chg" id="sc-new"></div>',
+    '</div>',
+    '<div class="stat-card stat-plain">',
+      '<div class="stat-title">All-time clients</div>',
+      '<div class="stat-val" id="sv-total">—</div>',
+    '</div>',
+  '</div>',
   '<div id="toolbar">',
     '<span>Sort:</span>',
     '<button class="btn active" id="btn-first">First booking</button>',
@@ -66,6 +107,15 @@ var timeHead    = document.getElementById('time-head');
 var ganttRows   = document.getElementById('gantt-rows');
 var gridOverlay = document.getElementById('grid-overlay');
 var ttEl        = document.getElementById('tt');
+
+// Stats bar refs
+var svActive  = document.getElementById('sv-active');
+var scActive  = document.getElementById('sc-active');
+var svBook30  = document.getElementById('sv-book30');
+var scBook30  = document.getElementById('sc-book30');
+var svNew     = document.getElementById('sv-new');
+var scNew     = document.getElementById('sc-new');
+var svTotal   = document.getElementById('sv-total');
 
 // ── Scroll sync ───────────────────────────────────────────────────────────
 rightEl.addEventListener('scroll', function () {
@@ -264,9 +314,9 @@ function mk(tag, cls) { var el = document.createElement(tag); if (cls) el.classN
 function drawViz(data) {
   // Read style values
   var st      = data.style || {};
-  activeColor = (st.activeColor && st.activeColor.value && st.activeColor.value.color) || '#1a73e8';
-  cancelColor = (st.cancelColor && st.cancelColor.value && st.cancelColor.value.color) || '#ea4335';
-  barColor    = (st.barColor    && st.barColor.value    && st.barColor.value.color)    || '#93bbf5';
+  activeColor = (st.activeColor && st.activeColor.value && st.activeColor.value.color) || '#8ab4f8';
+  cancelColor = (st.cancelColor && st.cancelColor.value && st.cancelColor.value.color) || '#f28b82';
+  barColor    = (st.barColor    && st.barColor.value    && st.barColor.value.color)    || '#3d6eb4';
 
   // Update legend dots
   document.getElementById('leg-active').style.background = activeColor;
@@ -275,28 +325,33 @@ function drawViz(data) {
 
   // Process rows — each row = one booking (email + date dimensions)
   var rows = data.tables.DEFAULT;
-
-  // DEBUG — show first row raw values so we can check data format
-  if (rows && rows.length > 0) {
-    var r0 = rows[0];
-    document.body.innerHTML = '<div style="padding:16px;font-family:monospace;font-size:11px;background:#fff;color:#000">'
-      + '<b>DEBUG — row count: ' + rows.length + '</b><br><br>'
-      + 'emailDim[0]: ' + JSON.stringify((r0.emailDim || [])[0]) + '<br>'
-      + 'dateDim[0]:  ' + JSON.stringify((r0.dateDim  || [])[0]) + '<br>'
-      + 'nameDim[0]:  ' + JSON.stringify((r0.nameDim  || [])[0]) + '<br>'
-      + 'statusDim[0]:' + JSON.stringify((r0.statusDim|| [])[0]) + '<br><br>'
-      + '<i>Remove debug block from index.js once format confirmed</i>'
-      + '</div>';
-    return;
-  }
-
   var clientMap = {};
 
+  // Some bookings are made under the studio's own email address.
+  // When that happens the real client email is often in the Customer Name field.
+  var EMAIL_RE    = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  var STUDIO_ADDR = 'singapore@poddster.com';
+
   rows.forEach(function (row) {
-    var email  = ((row.emailDim  || [])[0] || '').toLowerCase().trim();
-    var dStr   = ((row.dateDim   || [])[0] || '');
-    var name   = ((row.nameDim   || [])[0] || '');
-    var status = ((row.statusDim || [])[0] || '');
+    var rawEmail = ((row.emailDim   || [])[0] || '').toLowerCase().trim();
+    var dStr     = ((row.dateDim    || [])[0] || '');
+    var rawName  = ((row.nameDim    || [])[0] || '').trim();
+    var status   = ((row.statusDim  || [])[0] || '');
+    // orderIdDim is mapped to make each booking row unique so Looker Studio
+    // doesn't merge same-day bookings for the same client into one row.
+
+    // Resolve the true client email:
+    // If the booking email is the studio address but Customer Name is itself
+    // a valid email, that name IS the real client identifier.
+    var email, name;
+    if (rawEmail === STUDIO_ADDR && EMAIL_RE.test(rawName)) {
+      email = rawName.toLowerCase();
+      name  = '';   // no separate display name available
+    } else {
+      email = rawEmail;
+      // Only use Customer Name as a display name if it isn't just an email address
+      name  = EMAIL_RE.test(rawName) ? '' : rawName;
+    }
 
     if (!email) return;
     var dt = parseLS(dStr);
@@ -305,13 +360,14 @@ function drawViz(data) {
     if (!clientMap[email]) {
       clientMap[email] = { email: email, name: name, bookings: [] };
     }
+    // Keep the best (non-empty, non-email) display name seen for this client
     if (!clientMap[email].name && name) clientMap[email].name = name;
 
     clientMap[email].bookings.push({
       date:      dt,
       dateLabel: dt.getDate() + ' ' + MONTHS[dt.getMonth()] + ' ' + dt.getFullYear(),
       email:     email,
-      name:      name,
+      name:      clientMap[email].name,
       cancelled: /cancel/i.test(status)
     });
   });
@@ -335,12 +391,46 @@ function drawViz(data) {
     return;
   }
 
-  // Compute timeline bounds
+  // ── Stats bar ─────────────────────────────────────────────────────────────
+  var nowTs = new Date();
+  var d30   = new Date(nowTs.getTime() - 30 * 24 * 60 * 60 * 1000);
+  var d60   = new Date(nowTs.getTime() - 60 * 24 * 60 * 60 * 1000);
+  var actNow = 0, actPrev = 0, bkNow = 0, bkPrev = 0, newNow = 0, newPrev = 0;
+  allClients.forEach(function (c) {
+    if (c.bookings.some(function (b) { return b.date >= d30; }))              actNow++;
+    if (c.bookings.some(function (b) { return b.date >= d60 && b.date < d30; })) actPrev++;
+    c.bookings.forEach(function (b) {
+      if (b.date >= d30)             bkNow++;
+      else if (b.date >= d60)        bkPrev++;
+    });
+    if (c.firstDate >= d30)          newNow++;
+    if (c.firstDate >= d60 && c.firstDate < d30) newPrev++;
+  });
+  function pct(n, p) {
+    if (p === 0) return null;
+    return Math.round((n - p) / p * 100);
+  }
+  function setChg(el, n, p) {
+    var v = pct(n, p);
+    if (v === null) { el.textContent = ''; return; }
+    el.textContent = (v >= 0 ? '▲ +' : '▼ ') + v + '% vs prev 30d';
+    el.className = 'stat-chg ' + (v >= 0 ? 'up' : 'dn');
+  }
+  svActive.textContent = actNow;
+  svBook30.textContent = bkNow;
+  svNew.textContent    = newNow;
+  svTotal.textContent  = allClients.length;
+  setChg(scActive, actNow, actPrev);
+  setChg(scBook30, bkNow,  bkPrev);
+  setChg(scNew,    newNow, newPrev);
+
+  // ── Compute timeline bounds — end of next month + 1 buffer ────────────────
   var minMs = Math.min.apply(null, allClients.map(function (c) { return c.firstDate.getTime(); }));
   var sd    = new Date(minMs);
   sMon      = new Date(sd.getFullYear(), sd.getMonth(), 1);
   var now   = new Date();
-  var eMon  = new Date(now.getFullYear(), now.getMonth() + 2, 1);
+  // +3 = always show through end of next month with one extra month so labels never clip
+  var eMon  = new Date(now.getFullYear(), now.getMonth() + 3, 1);
   nMonths   = mDiff(sMon, eMon);
 
   // Fit mode: recalculate MONTH_W if active
